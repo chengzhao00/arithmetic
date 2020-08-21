@@ -1,0 +1,3 @@
+include ':lib_arithmetic'
+include ':app'
+rootProject.name = "test"
