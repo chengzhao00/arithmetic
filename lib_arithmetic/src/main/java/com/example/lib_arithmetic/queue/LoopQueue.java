@@ -4,7 +4,7 @@ package com.example.lib_arithmetic.queue;
  * @Author: MR-Cheng
  * @CreateDate: 2020/8/25 下午2:18
  * @Version: 1.0
- * @Description:
+ * @Description: 循环队列 (i + front) % data.length 每次dequeue时不进行数组的重新移动位置
  */
 public class LoopQueue<E> implements Queue<E> {
     private E[] data;
@@ -12,7 +12,7 @@ public class LoopQueue<E> implements Queue<E> {
     private int size;
 
     public LoopQueue(int capacity) {
-        data = (E[]) new Object[capacity + 1];
+        data = (E[]) new Object[capacity];
         front = 0;
         tail = 0;
         size = 0;
@@ -30,12 +30,12 @@ public class LoopQueue<E> implements Queue<E> {
 
     @Override
     public boolean isEmpty() {
-        return tail == front;
+        return size == 0;
     }
 
     @Override
     public void enqueue(E e) {
-        if ((tail + 1) % data.length == front) {
+        if (size == getCapacity()) {
             resize(getCapacity() * 2);
         }
         data[tail] = e;
@@ -44,9 +44,9 @@ public class LoopQueue<E> implements Queue<E> {
     }
 
     private void resize(int newCapacity) {
-        E[] newData = (E[]) new Object[newCapacity + 1]; // 扩容时将原来的数据放在新的数组中
+        E[] newData = (E[]) new Object[newCapacity]; // 扩容时将原来的数据放在新的数组中
         for (int i = 0; i < size; i++) {
-            newData[i] = data[(i + front) % data.length]; // 将[0...size]的时候重新放入数组
+            newData[i] = data[(i + front) % data.length]; // 将[0...size]的时候重新放入新的数组
         }
         data = newData;
         front = 0;
@@ -55,7 +55,7 @@ public class LoopQueue<E> implements Queue<E> {
 
     @Override
     public E dequeue() {
-        if (isEmpty()){
+        if (isEmpty()) {
             throw new IllegalArgumentException("don't empty");
         }
         E res = data[front];
@@ -71,7 +71,7 @@ public class LoopQueue<E> implements Queue<E> {
     @Override
     public E getFront() {
         if (isEmpty())
-            throw  new NullPointerException("data don't null");
+            throw new NullPointerException("data don't null");
         return data[front];
     }
 
@@ -85,10 +85,10 @@ public class LoopQueue<E> implements Queue<E> {
         StringBuilder sb = new StringBuilder();
         sb.append("Queue:size = " + size + " ,capacity = " + data.length + "\n");
         sb.append("[");
-        for (int i = front; i != tail; i = (i +1) % data.length) {
-            sb.append(data[i]);
-            if ((i + 1)% data.length != tail)
-                sb.append( ", ");
+        for (int i = 0; i < size; i++) {
+            sb.append(data[(i + front) % data.length]);
+            if ((i + front + 1) % data.length != tail)
+                sb.append(", ");
         }
         sb.append("] tail");
         return sb.toString();
@@ -96,15 +96,15 @@ public class LoopQueue<E> implements Queue<E> {
 
     public static void main(String[] args) {
         LoopQueue<Integer> queue = new LoopQueue<>();
-        for (int i = 0 ; i < 20; i++){
+        for (int i = 0; i < 20; i++) {
             queue.enqueue(i);
-            if (i % 3 == 2){
+            if (i % 3 == 2) {
                 queue.dequeue();
             }
             System.out.println(queue);
         }
 
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < 10; i++) {
             queue.dequeue();
             System.out.println(queue);
         }

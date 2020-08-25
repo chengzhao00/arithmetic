@@ -24,8 +24,8 @@ public class Test {
 
     public static void main(String[] args){
         int optCount = 100000;
-        double  arrtime = testQueue(new ArrayQueue<Integer>(),optCount);
-        double loopTime = testQueue(new LoopQueue<Integer>(),optCount);
+        double  arrtime = testQueue(new ArrayQueue<Integer>(),optCount); //测试数组队列的时间复杂度
+        double loopTime = testQueue(new LoopQueue<Integer>(),optCount); // 测试循环队列的时间复杂度
         System.out.println(arrtime);
         System.out.println(loopTime);
     }
