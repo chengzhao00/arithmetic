@@ -24,10 +24,12 @@ public class SortHelper {
             QuickSort.sort(arr);
         }else if  ("quickSort2way".equals(sortName)){
             QuickSort.sort2way(arr);
+        }else if  ("quickSort3way".equals(sortName)){
+            QuickSort.sort3way(arr);
         }
         long endTime = System.nanoTime();
         time = (endTime - startTime) / 1000000000.0;
-        System.out.println(time + "s");
+        System.out.println(sortName+ " -> "+time + "s");
     }
 
     /**
