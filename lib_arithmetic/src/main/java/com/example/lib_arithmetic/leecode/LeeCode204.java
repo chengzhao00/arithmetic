@@ -48,10 +48,27 @@ public class LeeCode204 {
         return u;
     }
 
+    // < target 的最大值的索引
+    public static int searchLower(int[] data,int target){
+        int l = -1, r = data.length;
+        while (l < r){
+            int  m = l + (r - l + 1) / 2;// 这个地方 加一是为了防止左边界l == mid
+            if (data[m] < target){
+                l = m;
+            }else{
+                r = m -1;
+            }
+        }
+        return l;
+    }
+
     public static void main(String[] args) {
 
         int[] arr = {1, 1, 3, 3, 5, 5, 7, 7};
 //        searchUpper()
+        for (int i =0 ; i <=6; i ++){
+            System.out.print(searchLower(arr,i)+" ->");
+        }
     }
 
 }
